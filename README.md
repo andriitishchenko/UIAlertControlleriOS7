@@ -1,13 +1,10 @@
 # UIAlertControlleriOS7
-UIAlertController iOS7
 
 > TEXTFIELDS NOT WORKS!!
-
-> autorotate NOT WORKS!!
-
 > NOTHING WORKS!!
-> 
-> 
+
+
+
 >  How to use:
 > ========================
 > 1  register class:
