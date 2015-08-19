@@ -7,6 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "UIAlertViewController.h"
+
+//extern Class uiAlertController;
+//extern Class uiAlertAction;
+
+//@class uiAlertController;
+//@class uiAlertAction;
 
 @interface ViewController ()
 - (IBAction)showAction:(id)sender;
@@ -31,30 +38,30 @@
 - (IBAction)showAction:(id)sender {
     
     
-    Class alertClass = objc_getClass("UIAlertController");
-    Class actionClass = objc_getClass("UIAlertAction");
+//    Class alertClass = NSClassFromString(@"UIAlertController");
+//    Class actionClass = NSClassFromString(@"UIAlertAction");
     
-    UIAlertController *alertController = [alertClass
+    UIAlertController *alertController = [uiAlertController
                                           alertControllerWithTitle: @"Title Demo "
                                           message:@"You have incoming message, please pay $ :)"
                                           preferredStyle:UIAlertControllerStyleAlert];
     
     
-    UIAlertAction *okAction = [actionClass
+    UIAlertAction *okAction = [uiAlertAction
                                actionWithTitle:@"OK"
                                style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction *action)
                                {
                                    NSLog(@"Ok");
                                }];
-    UIAlertAction *noAction = [actionClass
+    UIAlertAction *noAction = [uiAlertAction
                                actionWithTitle:@"No"
                                style:UIAlertActionStyleCancel
                                handler:^(UIAlertAction *action)
                                {
                                    NSLog(@"No");
                                }];
-    UIAlertAction *boomAction = [actionClass
+    UIAlertAction *boomAction = [uiAlertAction
                                  actionWithTitle:@"BooM!"
                                  style:UIAlertActionStyleDestructive
                                  handler:^(UIAlertAction *action)

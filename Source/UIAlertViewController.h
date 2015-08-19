@@ -9,7 +9,7 @@
 
 /*
  
- 
+ UIAlertViewControllerStyleActionSheet NOT WORKS!!
  TEXTFIELDS NOT WORKS!!
  autorotate NOT WORKS!!
  NOTHING WORKS!!
@@ -71,11 +71,10 @@
 
 #ifndef lottomobile_Header_h
 #define lottomobile_Header_h
-//#define kUIAlertControllerClassName @"UIAlertController"
-
 #import <UIKit/UIViewController.h>
 
-
+extern Class  uiAlertController;
+extern Class  uiAlertAction;
 
 typedef NS_ENUM(NSInteger, UIAlertViewActionStyle) {
     UIAlertViewActionStyleDefault = 0,

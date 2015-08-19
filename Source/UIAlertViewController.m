@@ -10,27 +10,29 @@
 #import <objc/runtime.h>
 
 #import <Foundation/Foundation.h>
-#import "UIAlertViewController.h"
-
 #import <QuartzCore/QuartzCore.h>
 
+#import "UIAlertViewController.h"
+
 #import "AppDelegate.h"
+
+ Class uiAlertController;
+ Class uiAlertAction;
 
 #define blueDeffButtonColor [UIColor colorWithRed:18.0/255.0 green:114.0/255.0 blue:251.0/255.0 alpha:1.0];
 #define redDeffButtonColor [UIColor colorWithRed:255.0/255.0 green:50.0/255.0 blue:37.0/255.0 alpha:1.0];
 
-static NSTimeInterval const DEAnimatedTransitionDuration = 0.15f;
-static NSTimeInterval const DEAnimatedTransitionMarcoDuration = 0.15f;
+static NSTimeInterval const AVCAnimatedTransitionDuration = 0.15f;
 
-@interface DEAnimatedTransitioning : NSObject <UIViewControllerAnimatedTransitioning>
+@interface AVCAnimatedTransitioning : NSObject <UIViewControllerAnimatedTransitioning>
     @property (nonatomic) BOOL reverse;
 @end
 
-@interface DETransitioningDelegate : NSObject<UIViewControllerTransitioningDelegate>
+@interface AVCTransitioningDelegate : NSObject<UIViewControllerTransitioningDelegate>
     @property (nonatomic) BOOL presenting;
 @end
 
-@implementation DEAnimatedTransitioning
+@implementation AVCAnimatedTransitioning
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
@@ -46,7 +48,7 @@ static NSTimeInterval const DEAnimatedTransitionMarcoDuration = 0.15f;
         [container addSubview:toViewController.view];
     }
     
-    [UIView animateKeyframesWithDuration:DEAnimatedTransitionDuration delay:0 options:0 animations:^{
+    [UIView animateKeyframesWithDuration:AVCAnimatedTransitionDuration delay:0 options:0 animations:^{
         if (self.reverse) {
             fromViewController.view.transform = CGAffineTransformMakeScale(0, 0);
         }
@@ -60,23 +62,23 @@ static NSTimeInterval const DEAnimatedTransitionMarcoDuration = 0.15f;
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return DEAnimatedTransitionDuration;
+    return AVCAnimatedTransitionDuration;
 }
 
 @end
 
 
-@implementation DETransitioningDelegate
+@implementation AVCTransitioningDelegate
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
-    DEAnimatedTransitioning *transitioning = [DEAnimatedTransitioning new];
+    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
     return transitioning;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    DEAnimatedTransitioning *transitioning = [DEAnimatedTransitioning new];
+    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
     transitioning.reverse = YES;
     return transitioning;
 }
@@ -119,7 +121,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     @property(nonatomic, assign) UIModalPresentationStyle restoreModalPresentationStyle;
     @property (nonatomic) BOOL isPresenting;
 
-    @property (nonatomic) DETransitioningDelegate* transitionDelegate;
+    @property (nonatomic) AVCTransitioningDelegate* transitionDelegate;
 
 @end
 
@@ -147,21 +149,25 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 
 
 +(void)RegisterClass{
+    if (uiAlertController) {
+        return;
+    }
     
     if(![UIAlertController class]){
-        
         Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
         objc_registerClassPair(alrt0);
         
         Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
         objc_registerClassPair(alrt1);
-        
-//        Class meta_cls1 = objc_getMetaClass("UIAlertController");
-//        Class meta_cls2 = objc_getMetaClass("UIAlertAction");
     }
+    uiAlertController = NSClassFromString(@"UIAlertController");
+    uiAlertAction = NSClassFromString(@"UIAlertAction");
 }
 
-
+- (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField *textField))configurationHandler
+{
+    NSLog(@"addTextFieldWithConfigurationHandler not implemented...YET");
+}
 
 - (void)addAction:(UIAlertViewAction *)action{
     if (!action) {
@@ -177,7 +183,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 {
     if(self = [super init])
     {
-        self.transitionDelegate = [DETransitioningDelegate new];
+        self.transitionDelegate = [AVCTransitioningDelegate new];
         self.contentView = [UIView new];
         self.contentView.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
         self.contentView.alpha = 0.9;
@@ -395,9 +401,6 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
         borderLayer.fillColor   = [UIColor clearColor].CGColor;
         [btn.layer addSublayer:borderLayer];
 
-        
-        
-        
         prevButton = btn;
     }
     
@@ -411,7 +414,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 
 
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+    return [UIApplication sharedApplication].statusBarHidden;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
