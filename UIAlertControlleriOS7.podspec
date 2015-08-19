@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary  = 'UIAlertController for iOS7'
   s.homepage = 'https://github.com/andriitishchenko/UIAlertControlleriOS7'
   s.authors  = {
-    'Andrii Tishchenko' => 'andrii.tishchenko@@gmail.com'
+    'Andrii Tishchenko' => 'andrii.tishchenko@gmail.com'
   }
   s.source   = {
     :git => 'https://github.com/andriitishchenko/UIAlertControlleriOS7',
