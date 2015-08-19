@@ -73,8 +73,49 @@
 #define lottomobile_Header_h
 #import <UIKit/UIViewController.h>
 
+
+//#define stringify(x) #x
+//#define namespaced_interface(space, klass) class NSObject; \
+//__attribute__((objc_runtime_name(stringify(space.klass)))) \
+//@interface klass
+//
+//#define namespaced_protocol(space, proto) class NSObject; \
+//__attribute__((objc_runtime_name(stringify(space.proto)))) \
+//@protocol proto
+//=================================
+//#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+////    extern Class  UIAlertController;
+////    extern Class  uiAlertAction;
+//
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+//    @interface UIAlertController : UIViewController
+//
+//    @end
+//
+//#pragma clang diagnostic pop
+//
+////
+//
+//#endif
+//
+
+////#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+//////#define WONT_COMPILE
+////#endif
+
+//#ifndef WONT_COMPILE
+//// forward declare of aliased name conflicts with alias
+////@class UIAlertController; // error: conflicting types for alias 'SpecificClass'
+//@interface UIAlertController : UIViewController
+////
+//@end
+//#endif
+
+
 extern Class  uiAlertController;
 extern Class  uiAlertAction;
+
 
 typedef NS_ENUM(NSInteger, UIAlertViewActionStyle) {
     UIAlertViewActionStyleDefault = 0,
@@ -86,7 +127,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewControllerStyle) {
     UIAlertViewControllerStyleActionSheet = 0,
     UIAlertViewControllerStyleAlert
 };
-
+__attribute__((objc_runtime_name("UIAlertAction")))
 @interface UIAlertViewAction : NSObject <NSCopying>
     @property (nonatomic, copy) NSString *title;
     @property (nonatomic) UIAlertViewActionStyle style;
@@ -94,6 +135,11 @@ typedef NS_ENUM(NSInteger, UIAlertViewControllerStyle) {
 + (instancetype)actionWithTitle:(NSString *)title style:(UIAlertViewActionStyle)style handler:(void (^)(UIAlertViewAction *action))handler;
 @end
 
+//#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+//#else
+//#endif
+
+__attribute__((objc_runtime_name("UIAlertController")))
 @interface UIAlertViewController : UIViewController
 @property (nonatomic, readonly) NSArray *textFields;
 @property (nonatomic, readonly) UIAlertViewControllerStyle preferredStyle;
@@ -102,12 +148,8 @@ typedef NS_ENUM(NSInteger, UIAlertViewControllerStyle) {
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(UIAlertViewControllerStyle)preferredStyle;
 - (void)addAction:(UIAlertViewAction *)action;
 - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField *textField))configurationHandler;
-
-
-
-
-
 @end
+
 
 
 #endif

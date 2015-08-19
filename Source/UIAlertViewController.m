@@ -153,13 +153,14 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
         return;
     }
     
-    if(![UIAlertController class]){
-        Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
-        objc_registerClassPair(alrt0);
-        
-        Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
-        objc_registerClassPair(alrt1);
-    }
+//    if(![UIAlertController class]){
+//#warning This block will never called as used __attribute__ in interface!
+//        Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
+//        objc_registerClassPair(alrt0);
+//        
+//        Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
+//        objc_registerClassPair(alrt1);
+//    }
     uiAlertController = NSClassFromString(@"UIAlertController");
     uiAlertAction = NSClassFromString(@"UIAlertAction");
 }
