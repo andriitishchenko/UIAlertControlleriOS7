@@ -68,7 +68,7 @@
 
 #ifndef lottomobile_Header_h
 #define lottomobile_Header_h
-#import <UIKit/UIViewController.h>
+//#import <UIKit/UIViewController.h>
 #import <UIKit/UIKit.h>
 void UIAlertControllerIOS7Registration();
 
