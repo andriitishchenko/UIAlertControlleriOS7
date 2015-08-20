@@ -14,7 +14,7 @@
 
 #import "UIAlertViewController.h"
 
-#import "AppDelegate.h"
+//#import "AppDelegate.h"
 
 
 void UIAlertControllerIOS7Registration(){
@@ -82,11 +82,9 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
         return UIAlertActionIOS7;
     }
     
-//    Class c;
     if(!(UIAlertActionIOS7 = objc_getClass("UIAlertAction"))) {
         if ((UIAlertActionIOS7 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0)))
             objc_registerClassPair(UIAlertActionIOS7);
-//            UIAlertActionIOS7 = c;
     }
     return UIAlertActionIOS7;
 }
@@ -97,14 +95,12 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(UIAlertViewControllerStyle)preferredStyle{
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
     UIAlertViewController* vc =[UIAlertViewController new];
     [vc setModalPresentationStyle: UIModalPresentationCustom];
     vc.modalPresentationCapturesStatusBarAppearance = YES;
 
-    vc.restoreModalPresentationStyle = appDelegate.window.rootViewController.modalPresentationStyle;
-    appDelegate.window.rootViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    vc.restoreModalPresentationStyle = [[UIApplication sharedApplication] delegate].window.rootViewController.modalPresentationStyle;
+    [[UIApplication sharedApplication] delegate].window.rootViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     vc.transitioningDelegate = vc.transitionDelegate;
     
@@ -115,49 +111,16 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     return vc;
 }
 
-//#warning This block will never called as used __attribute__ in interface!
-
 +(Class)getClassInst{
     if (UIAlertControllerIOS7) {
         return UIAlertControllerIOS7;
     }
-//    Class c;
     if(!(UIAlertControllerIOS7 = objc_getClass("UIAlertController"))) {
         if ((UIAlertControllerIOS7 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0)))
             objc_registerClassPair(UIAlertControllerIOS7);
-//            UIAlertControllerIOS7 = c;
-        
     }
     return UIAlertControllerIOS7;
 }
-
-//+(void)RegisterClass{
-//    return;
-////    UIAlertControllerIOS7
-////    [UIAlertViewController getClass];
-//    
-//    if (uiAlertController) {
-//        return;
-//    }
-//    
-//    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {//ios8
-//
-//    } else {//iOS 7 or below
-//        Class c;
-//        if ((c = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0))) objc_registerClassPair(c);
-//        if ((c = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0))) objc_registerClassPair(c);
-//    }
-//    
-////    if(![UIAlertController class]){
-////        Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
-////        objc_registerClassPair(alrt0);
-////        
-////        Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
-////        objc_registerClassPair(alrt1);
-////    }
-//    uiAlertController = NSClassFromString(@"UIAlertController");
-//    uiAlertAction = NSClassFromString(@"UIAlertAction");
-//}
 
 - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField *textField))configurationHandler
 {
@@ -285,10 +248,6 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:
                                @"V:|-(>=0@200)-[_contentView(<=380)]-(>=0@200)-|"
                                                                       options:kNilOptions metrics:nil views:views]];
-//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:
-//                               @"V:[_contentView(>=3)]"
-//                                                                      options:kNilOptions metrics:nil views:views]];
-
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
                                                           attribute:NSLayoutAttributeCenterX
@@ -414,8 +373,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    appDelegate.window.rootViewController.modalPresentationStyle = self.restoreModalPresentationStyle;
+    [[UIApplication sharedApplication] delegate].window.rootViewController.modalPresentationStyle = self.restoreModalPresentationStyle;
 }
 
 
