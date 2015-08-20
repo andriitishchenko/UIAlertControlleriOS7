@@ -19,8 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-
-    [UIAlertViewController RegisterClass];
+    UIAlertControllerIOS7Registration();
+    
     return YES;
 }
 

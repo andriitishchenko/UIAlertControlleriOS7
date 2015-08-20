@@ -9,12 +9,6 @@
 #import "ViewController.h"
 #import "UIAlertViewController.h"
 
-//extern Class uiAlertController;
-//extern Class uiAlertAction;
-
-//@class uiAlertController;
-//@class uiAlertAction;
-
 @interface ViewController ()
 - (IBAction)showAction:(id)sender;
 
@@ -37,31 +31,27 @@
 
 - (IBAction)showAction:(id)sender {
     
-    
-//    Class alertClass = NSClassFromString(@"UIAlertController");
-//    Class actionClass = NSClassFromString(@"UIAlertAction");
-    
-    UIAlertController *alertController = [uiAlertController
+    UIAlertController *alertController = [UIAlertControllerIOS7
                                           alertControllerWithTitle: @"Title Demo "
                                           message:@"You have incoming message, please pay $ :)"
                                           preferredStyle:UIAlertControllerStyleAlert];
     
     
-    UIAlertAction *okAction = [uiAlertAction
+    UIAlertAction *okAction = [UIAlertActionIOS7
                                actionWithTitle:@"OK"
                                style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction *action)
                                {
                                    NSLog(@"Ok");
                                }];
-    UIAlertAction *noAction = [uiAlertAction
+    UIAlertAction *noAction = [UIAlertActionIOS7
                                actionWithTitle:@"No"
                                style:UIAlertActionStyleCancel
                                handler:^(UIAlertAction *action)
                                {
                                    NSLog(@"No");
                                }];
-    UIAlertAction *boomAction = [uiAlertAction
+    UIAlertAction *boomAction = [UIAlertActionIOS7
                                  actionWithTitle:@"BooM!"
                                  style:UIAlertActionStyleDestructive
                                  handler:^(UIAlertAction *action)

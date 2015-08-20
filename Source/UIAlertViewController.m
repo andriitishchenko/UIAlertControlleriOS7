@@ -16,76 +16,19 @@
 
 #import "AppDelegate.h"
 
- Class uiAlertController;
- Class uiAlertAction;
+
+void UIAlertControllerIOS7Registration(){
+    [UIAlertViewController getClassInst];
+    [UIAlertViewAction getClassInst];
+}
+
+Class  UIAlertControllerIOS7;
+Class  UIAlertActionIOS7;
 
 #define blueDeffButtonColor [UIColor colorWithRed:18.0/255.0 green:114.0/255.0 blue:251.0/255.0 alpha:1.0];
 #define redDeffButtonColor [UIColor colorWithRed:255.0/255.0 green:50.0/255.0 blue:37.0/255.0 alpha:1.0];
 
 static NSTimeInterval const AVCAnimatedTransitionDuration = 0.15f;
-
-@interface AVCAnimatedTransitioning : NSObject <UIViewControllerAnimatedTransitioning>
-    @property (nonatomic) BOOL reverse;
-@end
-
-@interface AVCTransitioningDelegate : NSObject<UIViewControllerTransitioningDelegate>
-    @property (nonatomic) BOOL presenting;
-@end
-
-@implementation AVCAnimatedTransitioning
-
-- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
-{
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *container = [transitionContext containerView];
-    
-    if (self.reverse) {
-        [container insertSubview:toViewController.view belowSubview:fromViewController.view];
-    }
-    else {
-        toViewController.view.transform = CGAffineTransformMakeScale(0, 0);
-        [container addSubview:toViewController.view];
-    }
-    
-    [UIView animateKeyframesWithDuration:AVCAnimatedTransitionDuration delay:0 options:0 animations:^{
-        if (self.reverse) {
-            fromViewController.view.transform = CGAffineTransformMakeScale(0, 0);
-        }
-        else {
-            toViewController.view.transform = CGAffineTransformIdentity;
-        }
-    } completion:^(BOOL finished) {
-        [transitionContext completeTransition:finished];
-    }];
-}
-
-- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
-{
-    return AVCAnimatedTransitionDuration;
-}
-
-@end
-
-
-@implementation AVCTransitioningDelegate
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
-{
-    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
-    return transitioning;
-}
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
-    transitioning.reverse = YES;
-    return transitioning;
-}
-
-@end
-
-//=========================
 
 typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     UIAlertViewButtonsStyleDefault = 0,
@@ -93,19 +36,20 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     UIAlertViewButtonsStyleVertical
 };
 
-@interface UIAlertViewAction()
-@property (nonatomic, copy) void (^__strong handler)(UIAlertViewAction *__strong);
+@interface AVCAnimatedTransitioning : NSObject <UIViewControllerAnimatedTransitioning>
+    @property (nonatomic) BOOL reverse;
 @end
 
-@implementation UIAlertViewAction
-+ (instancetype)actionWithTitle:(NSString *)title style:(UIAlertViewActionStyle)style handler:(void (^)(UIAlertViewAction *action))handler{
-    UIAlertViewAction*va = [UIAlertViewAction new];
-    va.title = title;
-    va.handler = handler;
-    va.style = style;
-    return va;
-}
+//=========================
 
+@interface AVCTransitioningDelegate : NSObject<UIViewControllerTransitioningDelegate>
+    @property (nonatomic) BOOL presenting;
+@end
+
+//=========================
+
+@interface UIAlertViewAction()
+@property (nonatomic, copy) void (^__strong handler)(UIAlertViewAction *__strong);
 @end
 
 ///========================
@@ -122,6 +66,30 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     @property (nonatomic) BOOL isPresenting;
 
     @property (nonatomic) AVCTransitioningDelegate* transitionDelegate;
+
+@end
+
+@implementation UIAlertViewAction
++ (instancetype)actionWithTitle:(NSString *)title style:(UIAlertViewActionStyle)style handler:(void (^)(UIAlertViewAction *action))handler{
+    UIAlertViewAction*va = [UIAlertViewAction new];
+    va.title = title;
+    va.handler = handler;
+    va.style = style;
+    return va;
+}
++(Class)getClassInst{
+    if (UIAlertActionIOS7) {
+        return UIAlertActionIOS7;
+    }
+    
+//    Class c;
+    if(!(UIAlertActionIOS7 = objc_getClass("UIAlertAction"))) {
+        if ((UIAlertActionIOS7 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0)))
+            objc_registerClassPair(UIAlertActionIOS7);
+//            UIAlertActionIOS7 = c;
+    }
+    return UIAlertActionIOS7;
+}
 
 @end
 
@@ -147,23 +115,49 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     return vc;
 }
 
-
-+(void)RegisterClass{
-    if (uiAlertController) {
-        return;
-    }
-    
-//    if(![UIAlertController class]){
 //#warning This block will never called as used __attribute__ in interface!
-//        Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
-//        objc_registerClassPair(alrt0);
-//        
-//        Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
-//        objc_registerClassPair(alrt1);
-//    }
-    uiAlertController = NSClassFromString(@"UIAlertController");
-    uiAlertAction = NSClassFromString(@"UIAlertAction");
+
++(Class)getClassInst{
+    if (UIAlertControllerIOS7) {
+        return UIAlertControllerIOS7;
+    }
+//    Class c;
+    if(!(UIAlertControllerIOS7 = objc_getClass("UIAlertController"))) {
+        if ((UIAlertControllerIOS7 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0)))
+            objc_registerClassPair(UIAlertControllerIOS7);
+//            UIAlertControllerIOS7 = c;
+        
+    }
+    return UIAlertControllerIOS7;
 }
+
+//+(void)RegisterClass{
+//    return;
+////    UIAlertControllerIOS7
+////    [UIAlertViewController getClass];
+//    
+//    if (uiAlertController) {
+//        return;
+//    }
+//    
+//    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {//ios8
+//
+//    } else {//iOS 7 or below
+//        Class c;
+//        if ((c = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0))) objc_registerClassPair(c);
+//        if ((c = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0))) objc_registerClassPair(c);
+//    }
+//    
+////    if(![UIAlertController class]){
+////        Class alrt0 = objc_allocateClassPair([UIAlertViewAction class], "UIAlertAction", 0);
+////        objc_registerClassPair(alrt0);
+////        
+////        Class alrt1 = objc_allocateClassPair([UIAlertViewController class], "UIAlertController", 0);
+////        objc_registerClassPair(alrt1);
+////    }
+//    uiAlertController = NSClassFromString(@"UIAlertController");
+//    uiAlertAction = NSClassFromString(@"UIAlertAction");
+//}
 
 - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField *textField))configurationHandler
 {
@@ -426,5 +420,60 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
 
 
 @end
+
+
+@implementation AVCAnimatedTransitioning
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+{
+    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIView *container = [transitionContext containerView];
+    
+    if (self.reverse) {
+        [container insertSubview:toViewController.view belowSubview:fromViewController.view];
+    }
+    else {
+        toViewController.view.transform = CGAffineTransformMakeScale(0, 0);
+        [container addSubview:toViewController.view];
+    }
+    
+    [UIView animateKeyframesWithDuration:AVCAnimatedTransitionDuration delay:0 options:0 animations:^{
+        if (self.reverse) {
+            fromViewController.view.transform = CGAffineTransformMakeScale(0, 0);
+        }
+        else {
+            toViewController.view.transform = CGAffineTransformIdentity;
+        }
+    } completion:^(BOOL finished) {
+        [transitionContext completeTransition:finished];
+    }];
+}
+
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
+{
+    return AVCAnimatedTransitionDuration;
+}
+
+@end
+
+
+@implementation AVCTransitioningDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
+    return transitioning;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    AVCAnimatedTransitioning *transitioning = [AVCAnimatedTransitioning new];
+    transitioning.reverse = YES;
+    return transitioning;
+}
+
+@end
+
 
 

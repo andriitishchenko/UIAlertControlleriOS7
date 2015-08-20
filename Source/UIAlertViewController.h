@@ -11,7 +11,6 @@
  
  UIAlertViewControllerStyleActionSheet NOT WORKS!!
  TEXTFIELDS NOT WORKS!!
- autorotate NOT WORKS!!
  NOTHING WORKS!!
 
  
@@ -20,22 +19,20 @@
  1  register class:
  ========================
  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [UIAlertViewController RegisterClass];
+    UIAlertControllerIOS7Registration();
     return YES;
  }
  ========================
  2 call UIAlertController:
  ========================
-     Class alertClass = objc_getClass("UIAlertController");
-     Class actionClass = objc_getClass("UIAlertAction");
-     
-     UIAlertController *alertController = [alertClass
+
+    UIAlertController *alertController = [UIAlertControllerIOS7
      alertControllerWithTitle: @"Title Demo "
      message:@"You have incoming message, please pay $ :)"
      preferredStyle:UIAlertControllerStyleAlert];
      
      
-     UIAlertAction *okAction = [actionClass
+     UIAlertAction *okAction = [UIAlertActionIOS7
      actionWithTitle:@"OK"
      style:UIAlertActionStyleDefault
      handler:^(UIAlertAction *action)
@@ -43,7 +40,7 @@
         NSLog(@"Ok");
      }];
  
-     UIAlertAction *noAction = [actionClass
+     UIAlertAction *noAction = [UIAlertActionIOS7
      actionWithTitle:@"No"
      style:UIAlertActionStyleCancel
      handler:^(UIAlertAction *action)
@@ -51,7 +48,7 @@
         NSLog(@"No");
      }];
  
-     UIAlertAction *boomAction = [actionClass
+     UIAlertAction *boomAction = [UIAlertActionIOS7
      actionWithTitle:@"BooM!"
      style:UIAlertActionStyleDestructive
      handler:^(UIAlertAction *action)
@@ -72,50 +69,10 @@
 #ifndef lottomobile_Header_h
 #define lottomobile_Header_h
 #import <UIKit/UIViewController.h>
+void UIAlertControllerIOS7Registration();
 
-
-//#define stringify(x) #x
-//#define namespaced_interface(space, klass) class NSObject; \
-//__attribute__((objc_runtime_name(stringify(space.klass)))) \
-//@interface klass
-//
-//#define namespaced_protocol(space, proto) class NSObject; \
-//__attribute__((objc_runtime_name(stringify(space.proto)))) \
-//@protocol proto
-//=================================
-//#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
-////    extern Class  UIAlertController;
-////    extern Class  uiAlertAction;
-//
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
-//    @interface UIAlertController : UIViewController
-//
-//    @end
-//
-//#pragma clang diagnostic pop
-//
-////
-//
-//#endif
-//
-
-////#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
-//////#define WONT_COMPILE
-////#endif
-
-//#ifndef WONT_COMPILE
-//// forward declare of aliased name conflicts with alias
-////@class UIAlertController; // error: conflicting types for alias 'SpecificClass'
-//@interface UIAlertController : UIViewController
-////
-//@end
-//#endif
-
-
-extern Class  uiAlertController;
-extern Class  uiAlertAction;
-
+extern Class  UIAlertControllerIOS7;
+extern Class  UIAlertActionIOS7;
 
 typedef NS_ENUM(NSInteger, UIAlertViewActionStyle) {
     UIAlertViewActionStyleDefault = 0,
@@ -127,29 +84,30 @@ typedef NS_ENUM(NSInteger, UIAlertViewControllerStyle) {
     UIAlertViewControllerStyleActionSheet = 0,
     UIAlertViewControllerStyleAlert
 };
-__attribute__((objc_runtime_name("UIAlertAction")))
+
+
+
+//__attribute__((objc_runtime_name("UIAlertAction")))
 @interface UIAlertViewAction : NSObject <NSCopying>
     @property (nonatomic, copy) NSString *title;
     @property (nonatomic) UIAlertViewActionStyle style;
     @property (nonatomic, getter=isEnabled) BOOL enabled;
 + (instancetype)actionWithTitle:(NSString *)title style:(UIAlertViewActionStyle)style handler:(void (^)(UIAlertViewAction *action))handler;
++ (Class)getClassInst;
 @end
 
-//#if __IPHONE_8_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
-//#else
-//#endif
 
-__attribute__((objc_runtime_name("UIAlertController")))
+
+//__attribute__((objc_runtime_name("UIAlertController")))
 @interface UIAlertViewController : UIViewController
 @property (nonatomic, readonly) NSArray *textFields;
 @property (nonatomic, readonly) UIAlertViewControllerStyle preferredStyle;
 
-+ (void)RegisterClass;
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(UIAlertViewControllerStyle)preferredStyle;
 - (void)addAction:(UIAlertViewAction *)action;
 - (void)addTextFieldWithConfigurationHandler:(void (^)(UITextField *textField))configurationHandler;
++ (Class)getClassInst;
 @end
 
-
-
 #endif
+

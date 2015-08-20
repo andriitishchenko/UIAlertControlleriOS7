@@ -9,11 +9,11 @@
 > ========================
 > 1  register class:
 > ========================
-
+    #import "UIAlertViewController.h"
 
 ```
  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [UIAlertViewController RegisterClass];
+    UIAlertControllerIOS7Registration();
     return YES;
  }
 
@@ -25,17 +25,14 @@
 > ========================
 
 
-```
-     Class alertClass = objc_getClass("UIAlertController");
-     Class actionClass = objc_getClass("UIAlertAction");
-     
-     UIAlertController *alertController = [alertClass
+```     
+     UIAlertController *alertController = [UIAlertControllerIOS7
      alertControllerWithTitle: @"Title Demo "
      message:@"You have incoming message, please pay $ :)"
      preferredStyle:UIAlertControllerStyleAlert];
      
      
-     UIAlertAction *okAction = [actionClass
+     UIAlertAction *okAction = [UIAlertActionIOS7
      actionWithTitle:@"OK"
      style:UIAlertActionStyleDefault
      handler:^(UIAlertAction *action)
@@ -43,7 +40,7 @@
         NSLog(@"Ok");
      }];
  
-     UIAlertAction *noAction = [actionClass
+     UIAlertAction *noAction = [UIAlertActionIOS7
      actionWithTitle:@"No"
      style:UIAlertActionStyleCancel
      handler:^(UIAlertAction *action)
@@ -51,7 +48,7 @@
         NSLog(@"No");
      }];
  
-     UIAlertAction *boomAction = [actionClass
+     UIAlertAction *boomAction = [UIAlertActionIOS7
      actionWithTitle:@"BooM!"
      style:UIAlertActionStyleDestructive
      handler:^(UIAlertAction *action)
