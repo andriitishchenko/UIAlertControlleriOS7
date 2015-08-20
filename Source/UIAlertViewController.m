@@ -28,7 +28,7 @@ Class  UIAlertActionIOS7;
 #define blueDeffButtonColor [UIColor colorWithRed:18.0/255.0 green:114.0/255.0 blue:251.0/255.0 alpha:1.0];
 #define redDeffButtonColor [UIColor colorWithRed:255.0/255.0 green:50.0/255.0 blue:37.0/255.0 alpha:1.0];
 
-static NSTimeInterval const AVCAnimatedTransitionDuration = 0.15f;
+static NSTimeInterval const AVCAnimatedTransitionDuration = 0.1f;
 
 typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     UIAlertViewButtonsStyleDefault = 0,
@@ -105,7 +105,8 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
     vc.transitioningDelegate = vc.transitionDelegate;
     
     
-    vc.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:.4];
+//    vc.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:.4];
+        vc.view.backgroundColor = [UIColor clearColor ];
     vc.title = title;
     vc.message = message;
     return vc;
@@ -144,7 +145,7 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
         self.transitionDelegate = [AVCTransitioningDelegate new];
         self.contentView = [UIView new];
         self.contentView.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
-        self.contentView.alpha = 0.9;
+        self.contentView.alpha = 0.95;
         self.contentView.layer.cornerRadius = 5;
         self.contentView.layer.masksToBounds = YES;
         self.contentView.layer.shadowOffset = CGSizeMake(-2, 7);
@@ -392,20 +393,29 @@ typedef NS_ENUM(NSInteger, UIAlertViewButtonsStyle) {
         [container insertSubview:toViewController.view belowSubview:fromViewController.view];
     }
     else {
-        toViewController.view.transform = CGAffineTransformMakeScale(0, 0);
+        toViewController.view.transform = CGAffineTransformMakeScale(1.2, 1.2);
         [container addSubview:toViewController.view];
     }
     
+
     [UIView animateKeyframesWithDuration:AVCAnimatedTransitionDuration delay:0 options:0 animations:^{
         if (self.reverse) {
-            fromViewController.view.transform = CGAffineTransformMakeScale(0, 0);
+            fromViewController.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0];
+//            fromViewController.view.transform = CGAffineTransformMakeScale(0, 0);
         }
         else {
             toViewController.view.transform = CGAffineTransformIdentity;
+            toViewController.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4];
+
         }
     } completion:^(BOOL finished) {
-        [transitionContext completeTransition:finished];
+            [transitionContext completeTransition:finished];
     }];
+    
+    
+
+
+    
 }
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
